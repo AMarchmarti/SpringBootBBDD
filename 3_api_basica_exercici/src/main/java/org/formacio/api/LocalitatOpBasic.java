@@ -32,11 +32,18 @@ public class LocalitatOpBasic {
 		localitat.setHabitants(habitants);
 		em.persist(localitat);
 	}
-	
+
+	@Transactional
 	public void elimina (long id) {
+		Localitat localitat = carrega(id);
+		if(localitat != null){
+			em.remove(localitat);
+		}
 	}
-	
+
+	@Transactional
 	public void modifica (Localitat localitat) {
+		em.merge(localitat);
 	}
 
 }
