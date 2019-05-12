@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 /**
  * Modifica aquesta classe per tal que sigui un component Spring que realitza les 
@@ -23,8 +24,13 @@ public class LocalitatOpBasic {
 		Localitat localitat = getEm().find(Localitat.class, id);
 		return localitat;
 	}
-	
+
+	@Transactional
 	public void alta (String nom, Integer habitants) {
+		Localitat localitat = new Localitat();
+		localitat.setNom(nom);
+		localitat.setHabitants(habitants);
+		em.persist(localitat);
 	}
 	
 	public void elimina (long id) {

@@ -2,10 +2,7 @@ package org.formacio.api;
 
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Introduiu, sense canviar el codi ja existent, les annotacions de mapping necessaries
@@ -17,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "T_LOCALITATS")
 public class Localitat {
 
-	@Id
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "LOC_ID")
 	private Long id;
 
