@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SpringBootBBDD.iml" filepath="$PROJECT_DIR$/.idea/SpringBootBBDD.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../2_mapping_basic_plantilla/jpa_basic.iml" filepath="$PROJECT_DIR$/../2_mapping_basic_plantilla/jpa_basic.iml" />
     </modules>
   </component>
 </project>
