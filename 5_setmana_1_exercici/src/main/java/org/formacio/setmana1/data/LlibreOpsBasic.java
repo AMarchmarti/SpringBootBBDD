@@ -1,26 +1,53 @@
 package org.formacio.setmana1.data;
 
 
+import antlr.collections.impl.LList;
 import org.formacio.setmana1.domini.Llibre;
 import org.formacio.setmana1.domini.Recomanacio;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 /**
  * Modifica aquesta classe per tal que sigui un component Spring que realitza les 
  * operacions de persistencia tal com indiquen les firmes dels metodes
  */
+@Repository
 public class LlibreOpsBasic {
-	
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
 	/**
 	 * Retorna el llibre amb l'ISBN indicat o, si no existeix, llança un LlibreNoExisteixException
 	 */
+	@Transactional
 	public Llibre carrega (String isbn) throws LlibreNoExisteixException {
-		return null;
+		try{
+			return getEntityManager().find(Llibre.class, isbn);
+		}catch (Exception e){
+			throw new LlibreNoExisteixException();
+		}
 	}
 	
 	/**
 	 * Sense sorpreses: dona d'alta un nou llibre amb les propietats especificaques
 	 */
+	@Transactional
 	public void alta (String isbn, String autor, Integer pagines, Recomanacio recomanacio, String titol) {
+		Llibre llibre = new Llibre();
+		llibre.setIsbn(isbn);
+		llibre.setAutor(autor);
+		llibre.setTitol(titol);
+		llibre.setPagines(pagines);
+		llibre.setRecomanacio(recomanacio);
+		getEntityManager().persist(llibre);
 	}
 	
 	/**
@@ -28,14 +55,21 @@ public class LlibreOpsBasic {
 	 * @param isbn del llibre a eliminar
 	 * @return true si s'ha esborrat el llibre, false si no existia
 	 */
-	public boolean elimina (String isbn) {
-		return true;
+	@Transactional
+	public boolean elimina (String isbn){
+		if (elimina(isbn)){
+			getEntityManager().remove(Llibre.class);
+			return true;
+		}
+		return false;
 	}
 	
 	/**
 	 * Guarda a bbdd l'estat del llibre indicat
 	 */
+	@Transactional
 	public void modifica (Llibre llibre) {
+		getEntityManager().merge(llibre);
 	}
 	
 	/**
@@ -43,6 +77,9 @@ public class LlibreOpsBasic {
 	 * (Aquest metode no llanca excepcions!)
 	 */
 	public boolean existeix (String isbn) {
+		if (getEntityManager().find(Llibre.class, isbn) != null){
+			return true;
+		}
 		return false;
 	}
 
@@ -50,7 +87,12 @@ public class LlibreOpsBasic {
 	 * Retorna quina es la recomanacio per el llibre indicat
 	 * Si el llibre indicat no existeix, retorna null
 	 */
+	@Transactional
 	public Recomanacio recomenacioPer (String isbn) {
+		Llibre llibre = getEntityManager().find(Llibre.class, isbn);
+		if (llibre != null){
+			return llibre.getRecomanacio();
+		}
 		return null;
 	}
 	
