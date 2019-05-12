@@ -1,9 +1,10 @@
 package org.formacio.setmana1.data;
 
 
-import antlr.collections.impl.LList;
+
 import org.formacio.setmana1.domini.Llibre;
 import org.formacio.setmana1.domini.Recomanacio;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -29,9 +30,10 @@ public class LlibreOpsBasic {
 	 */
 	@Transactional
 	public Llibre carrega (String isbn) throws LlibreNoExisteixException {
-		try{
-			return getEntityManager().find(Llibre.class, isbn);
-		}catch (Exception e){
+		Llibre llibre = getEntityManager().find(Llibre.class, isbn);
+		if(llibre != null){
+			return llibre;
+		}else{
 			throw new LlibreNoExisteixException();
 		}
 	}
@@ -57,8 +59,9 @@ public class LlibreOpsBasic {
 	 */
 	@Transactional
 	public boolean elimina (String isbn){
-		if (elimina(isbn)){
-			getEntityManager().remove(Llibre.class);
+		Llibre llibre = getEntityManager().find(Llibre.class,isbn);
+		if (existeix(isbn)){
+			getEntityManager().remove(llibre);
 			return true;
 		}
 		return false;

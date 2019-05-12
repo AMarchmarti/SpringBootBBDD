@@ -24,8 +24,6 @@ public class LlibreController {
 	@RequestMapping(path="/recomanacio")
 	@ResponseBody
  	public Recomanacio obteLlibre (String isbn) {
-		// Feis que retorni la recomanacio per el llibre indicat
-		// emprat LlibreOpsBasic
-		return null; 
+		return llibreOpsBasic.recomenacioPer(isbn);
 	}
 }

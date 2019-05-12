@@ -1,7 +1,7 @@
 package org.formacio.setmana1.domini;
 
 
-import org.springframework.data.annotation.Id;
+
 
 import javax.persistence.*;
 
