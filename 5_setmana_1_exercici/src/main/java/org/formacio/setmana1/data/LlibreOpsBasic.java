@@ -89,7 +89,7 @@ public class LlibreOpsBasic {
 	 * Retorna quina es la recomanacio per el llibre indicat
 	 * Si el llibre indicat no existeix, retorna null
 	 */
-	@Transactional
+
 	public Recomanacio recomenacioPer (String isbn) {
 		try {
 			Llibre llibre = this.carrega(isbn);
