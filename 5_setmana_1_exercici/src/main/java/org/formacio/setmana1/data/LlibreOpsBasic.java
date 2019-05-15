@@ -28,7 +28,7 @@ public class LlibreOpsBasic {
 	/**
 	 * Retorna el llibre amb l'ISBN indicat o, si no existeix, llança un LlibreNoExisteixException
 	 */
-	@Transactional
+
 	public Llibre carrega (String isbn) throws LlibreNoExisteixException {
 		Llibre llibre = getEntityManager().find(Llibre.class, isbn);
 		if(llibre != null){
@@ -59,12 +59,11 @@ public class LlibreOpsBasic {
 	 */
 	@Transactional
 	public boolean elimina (String isbn){
-		Llibre llibre = getEntityManager().find(Llibre.class,isbn);
-		if (existeix(isbn)){
+		try{
+			Llibre llibre = this.carrega(isbn);
 			getEntityManager().remove(llibre);
 			return true;
-		}
-		return false;
+		}catch (LlibreNoExisteixException e){return false;}
 	}
 	
 	/**
@@ -92,11 +91,12 @@ public class LlibreOpsBasic {
 	 */
 	@Transactional
 	public Recomanacio recomenacioPer (String isbn) {
-		Llibre llibre = getEntityManager().find(Llibre.class, isbn);
-		if (llibre != null){
+		try {
+			Llibre llibre = this.carrega(isbn);
 			return llibre.getRecomanacio();
+		}catch (LlibreNoExisteixException e){
+			return null;
 		}
-		return null;
 	}
 	
 }
